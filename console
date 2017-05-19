@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @link http://ipaya.cn/
+ * @copyright Copyright (c) 2016 ipaya.cn
+ */
+
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+define('ROOT_PATH', __DIR__);
+
+$vendorPath = ROOT_PATH . '/vendor';
+
+require($vendorPath . '/autoload.php');
+require($vendorPath . '/yiisoft/yii2/Yii.php');
+
+$application = new yii\console\Application([
+    'id' => 'iPaya-swoole',
+    'basePath' => ROOT_PATH . '/src',
+    'enableCoreCommands' => false,
+    'runtimePath' => ROOT_PATH . '/runtime',
+    'controllerNamespace' => 'iPaya\Swoole\Commands',
+    'aliases' => [
+        '@iPaya/Swoole' => ROOT_PATH . '/src/'
+    ]
+]);
+$application->run();
