@@ -1,0 +1,27 @@
+{
+  "name": "ipaya/yii2-swoole",
+  "description": "The swoole extension for Yii2.",
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.4.0",
+    "ext-swoole": ">=1.9.5"
+    "yiisoft/yii2": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">4.8.20 <6.0"
+  },
+  "config": {
+    "process-timeout": 1800
+  },
+  "extra": {
+    "asset-installer-paths": {
+      "npm-asset-library": "vendor/npm",
+      "bower-asset-library": "vendor/bower"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "iPaya\\Swoole\\": "src"
+    }
+  }
+}
