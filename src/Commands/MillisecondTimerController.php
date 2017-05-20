@@ -7,6 +7,7 @@
 namespace iPaya\Swoole\Commands;
 
 
+use iPaya\Swoole\Handlers\ConsoleHandler;
 use iPaya\Swoole\Servers\MillisecondTimerServer;
 use yii\console\Controller;
 
@@ -20,13 +21,16 @@ class MillisecondTimerController extends Controller
     public function init()
     {
         parent::init();
-        $this->server = new MillisecondTimerServer([
-            'cmd' => 'say/something',
-            'cmdParams' => [
+        $handler = new ConsoleHandler([
+            'console' => \Yii::$app,
+            'route' => 'say/something',
+            'routeParams' => [
                 'Hello World'
             ],
+        ]);
+        $this->server = new MillisecondTimerServer([
             'millisecond' => 5000,// 5 秒钟执行一次,
-            'console' => \Yii::$app
+            'handler' => $handler
         ]);
     }
 

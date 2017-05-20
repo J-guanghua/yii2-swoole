@@ -6,28 +6,21 @@
 
 namespace iPaya\Swoole\Servers;
 
+use iPaya\Swoole\Handlers\AbstractHandler;
 use Swoole\Server as SwooleServer;
-use yii\console\Application;
 
 class MillisecondTimerServer extends AbstractServer
 {
     public $name = '毫秒定时器';
     /**
-     * @var Application
-     */
-    public $console;
-    /**
-     * @var string 命令
-     */
-    public $cmd;
-    /**
-     * @var array 命令参数
-     */
-    public $cmdParams = [];
-    /**
      * @var int 定时间隔
      */
     public $millisecond = 1000;
+
+    /**
+     * @var AbstractHandler
+     */
+    public $handler;
 
     public $swooleOptions = [
         'worker_num' => 1,
@@ -46,7 +39,9 @@ class MillisecondTimerServer extends AbstractServer
     {
         if ($worker_id == 0) {
             $server->tick($this->millisecond, function () {
-                $this->console->runAction($this->cmd, $this->cmdParams);
+                if ($this->handler instanceof AbstractHandler) {
+                    $this->handler->handle();
+                }
             });
         }
     }
