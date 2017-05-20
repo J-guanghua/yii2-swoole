@@ -7,7 +7,7 @@
 namespace iPaya\Swoole\Servers;
 
 use iPaya\Swoole\Handlers\AbstractHandler;
-use Swoole\Server as SwooleServer;
+use Swoole\Server;
 
 class MillisecondTimerServer extends AbstractServer
 {
@@ -32,15 +32,15 @@ class MillisecondTimerServer extends AbstractServer
     ];
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $worker_id
      */
     public function onWorkerStart($server, $worker_id)
     {
         if ($worker_id == 0) {
-            $server->tick($this->millisecond, function () {
+            $server->tick($this->millisecond, function () use ($server) {
                 if ($this->handler instanceof AbstractHandler) {
-                    $this->handler->handle();
+                    $this->handler->handle($server);
                 }
             });
         }

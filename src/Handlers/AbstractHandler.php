@@ -7,9 +7,13 @@
 namespace iPaya\Swoole\Handlers;
 
 
+use Swoole\Server;
 use yii\base\Object;
 
 abstract class AbstractHandler extends Object
 {
-    abstract function handle();
+    /**
+     * @param Server $server
+     */
+    abstract function handle($server);
 }

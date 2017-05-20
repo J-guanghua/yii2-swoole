@@ -25,7 +25,10 @@ class ConsoleHandler extends AbstractHandler
     public $routeParams = [];
 
 
-    function handle()
+    /**
+     * @inheritdoc
+     */
+    function handle($server)
     {
         $this->console->runAction($this->route, $this->routeParams);
     }
