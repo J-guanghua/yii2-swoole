@@ -4,7 +4,7 @@
 
 ## 使用 Composer 安装
 
-在命令行执行如下命令安装:
+在命令行执行如下命令安装：
 
 ```
 php composer.phar require --prefer-dist ipaya/yii2-swoole
