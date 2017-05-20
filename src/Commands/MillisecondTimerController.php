@@ -30,6 +30,9 @@ class MillisecondTimerController extends Controller
         ]);
     }
 
+    /**
+     * 启动定时器
+     */
     public function actionStart()
     {
         $this->server->start();

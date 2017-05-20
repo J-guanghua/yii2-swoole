@@ -11,16 +11,13 @@ use yii\console\Application;
 
 class MillisecondTimerServer extends AbstractServer
 {
-    /**
-     * @var MillisecondTimerServer
-     */
-    public $server;
+    public $name = '毫秒定时器';
     /**
      * @var Application
      */
     public $console;
     /**
-     * @var 命令
+     * @var string 命令
      */
     public $cmd;
     /**
@@ -32,19 +29,14 @@ class MillisecondTimerServer extends AbstractServer
      */
     public $millisecond = 1000;
 
+    public $swooleOptions = [
+        'worker_num' => 1,
+        'daemonize' => false,
+    ];
 
-    public function init()
-    {
-        $this->server = new SwooleServer('127.0.0.1', 9051);
-        $this->server->set([
-            'worker_num' => 1,
-            'daemonize' => false,
-        ]);
-        $this->server->on('workerStart', [$this, 'onWorkerStart']);
-        $this->server->on('connect', [$this, 'onConnect']);
-        $this->server->on('receive', [$this, 'onReceive']);
-        $this->server->on('close', [$this, 'onClose']);
-    }
+    public $events = [
+        'start', 'workerStart', 'connect', 'receive', 'close'
+    ];
 
     /**
      * @param SwooleServer $server
@@ -58,38 +50,4 @@ class MillisecondTimerServer extends AbstractServer
             });
         }
     }
-
-    public function onConnect()
-    {
-        echo __METHOD__;
-    }
-
-    public function onReceive($server, $fd, $from_id, $data)
-    {
-        echo __METHOD__;
-        $server->close($fd);
-    }
-
-    public function onClose()
-    {
-        echo __METHOD__;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function start()
-    {
-        $this->server->start();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function shutdown()
-    {
-        // TODO: Implement shutdown() method.
-    }
-
-
 }
