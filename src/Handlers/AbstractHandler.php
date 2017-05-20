@@ -14,6 +14,7 @@ abstract class AbstractHandler extends Object
 {
     /**
      * @param Server $server
+     * @param array $params
      */
-    abstract function handle($server);
+    abstract function handle($server, $params = []);
 }

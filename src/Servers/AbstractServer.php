@@ -6,6 +6,7 @@
 
 namespace iPaya\Swoole\Servers;
 
+use iPaya\Swoole\Helpers\ConsoleHelper;
 use Swoole\Server as SwooleServer;
 use yii\base\InvalidParamException;
 use yii\base\Object;
@@ -60,13 +61,13 @@ abstract class AbstractServer extends Object
         'managerStop' => 'onManagerStop',
     ];
 
+
     /**
-     * @inheritdoc
+     * 启动服务器
      */
-    public function init()
+    public function start()
     {
-        parent::init();
-        $this->server = new SwooleServer('127.0.0.1', 9051);
+        $this->server = new SwooleServer($this->host, $this->port);
         $this->server->set($this->swooleOptions);
 
         foreach ($this->events as $event) {
@@ -76,27 +77,7 @@ abstract class AbstractServer extends Object
                 $this->server->on($event, [$this, self::$eventHandlers[$event]]);
             }
         }
-    }
-
-    /**
-     * @param string $string
-     * @return bool|int
-     */
-    public function stdout($string)
-    {
-        $args = func_get_args();
-        array_shift($args);
-        $string = Console::ansiFormat($string, $args);
-        return Console::stdout($string);
-    }
-
-    /**
-     * 启动服务器
-     */
-    public function start()
-    {
-
-        $this->stdout("启动{$this->name}...");
+        ConsoleHelper::stdout("启动 [{$this->name}] ...");
         $this->server->start();
     }
 
@@ -105,7 +86,7 @@ abstract class AbstractServer extends Object
      */
     public function shutdown()
     {
-        $this->stdout("关闭{$this->name}...");
+        ConsoleHelper::stdout("关闭{$this->name}...");
     }
 
     /**
@@ -113,7 +94,7 @@ abstract class AbstractServer extends Object
      */
     public function onStart($server)
     {
-        $this->stdout('[Ok]' . PHP_EOL, Console::BOLD, Console::FG_GREEN);
+        ConsoleHelper::stdout("[$this->host:$this->port] [Ok]" . PHP_EOL, Console::BOLD, Console::FG_GREEN);
     }
 
     /**
@@ -121,7 +102,7 @@ abstract class AbstractServer extends Object
      */
     public function onShutdown($server)
     {
-        $this->stdout('[Ok]' . PHP_EOL, Console::BOLD, Console::FG_GREEN);
+        ConsoleHelper::stdout('[Ok]' . PHP_EOL, Console::BOLD, Console::FG_GREEN);
     }
 
     /**
@@ -130,7 +111,7 @@ abstract class AbstractServer extends Object
      */
     public function onWorkerStart($server, $worker_id)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout("Worker #{$worker_id} started." . PHP_EOL);
     }
 
     /**
@@ -139,7 +120,7 @@ abstract class AbstractServer extends Object
      */
     public function onWorkerStop($server, $worker_id)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onWorkerStop' . PHP_EOL);
     }
 
     /**
@@ -148,7 +129,7 @@ abstract class AbstractServer extends Object
      */
     public function onTimer($server, $interval)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onTimer' . PHP_EOL);
     }
 
     /**
@@ -158,7 +139,7 @@ abstract class AbstractServer extends Object
      */
     public function onConnect($server, $fd, $from_id)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout("#{$fd} connected." . $fd . PHP_EOL);
     }
 
     /**
@@ -169,7 +150,7 @@ abstract class AbstractServer extends Object
      */
     public function onReceive($server, $fd, $from_id, $data)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('Receive data from #' . $fd . "\n" . $data . PHP_EOL . PHP_EOL);
     }
 
     /**
@@ -179,7 +160,7 @@ abstract class AbstractServer extends Object
      */
     public function onPacket($server, $data, array $client_info)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onPacket' . PHP_EOL);
     }
 
     /**
@@ -189,7 +170,7 @@ abstract class AbstractServer extends Object
      */
     public function onClose($server, $fd, $reactorId)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout("Client #{$fd} closed." . PHP_EOL);
     }
 
     /**
@@ -200,7 +181,7 @@ abstract class AbstractServer extends Object
      */
     public function onTask(SwooleServer $server, $task_id, $src_worker_id, $data)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onTask $' . $task_id . PHP_EOL);
     }
 
     /**
@@ -210,7 +191,7 @@ abstract class AbstractServer extends Object
      */
     public function onFinish($server, $task_id, $data)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout("Task \${$task_id} Finished." . PHP_EOL . PHP_EOL);
     }
 
     /**
@@ -220,7 +201,7 @@ abstract class AbstractServer extends Object
      */
     public function onPipeMessage($server, $from_worker_id, $message)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onPipeMessage' . PHP_EOL);
     }
 
     /**
@@ -232,7 +213,7 @@ abstract class AbstractServer extends Object
      */
     public function onWorkerError($server, $worker_id, $worker_pid, $exit_code, $signal)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onWorkerError' . PHP_EOL);
     }
 
     /**
@@ -240,7 +221,7 @@ abstract class AbstractServer extends Object
      */
     public function onManagerStart($server)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onManagerStart' . PHP_EOL);
     }
 
     /**
@@ -248,6 +229,6 @@ abstract class AbstractServer extends Object
      */
     public function onManagerStop($server)
     {
-        $this->stdout(__METHOD__);
+        ConsoleHelper::stdout('onManagerStop' . PHP_EOL);
     }
 }
