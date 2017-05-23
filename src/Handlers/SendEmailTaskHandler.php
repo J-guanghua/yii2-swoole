@@ -8,20 +8,34 @@ namespace iPaya\Swoole\Handlers;
 
 
 use iPaya\Swoole\Helpers\ConsoleHelper;
-use yii\helpers\Json;
+use Yii;
+use yii\helpers\Console;
 
 class SendEmailTaskHandler extends AbstractHandler
 {
     /**
-     * 模拟发送邮件
+     * 发送邮件
      * @inheritDoc
      */
     function handle($server, $data = [])
     {
         $task_id = $data['task_id'];
-        $email = $data['email'];
+        $to = $data['to'];
+        $subject = $data['subject'];
+        $body = $data['body'];
 
-        ConsoleHelper::stdout(self::className() . " \${$task_id} >>> Send email to {$email}\n" . Json::encode($data) . PHP_EOL);
+        ConsoleHelper::stdout("Task \${$task_id} executing...");
+
+        $mailer = Yii::$app->mailer->compose();
+        $mailer->setTo($to);
+        $mailer->setSubject($subject);
+        $mailer->setHtmlBody($body);
+        if ($mailer->send()) {
+            ConsoleHelper::stdout("[Ok]" . PHP_EOL, Console::BOLD, Console::FG_GREEN);
+        } else {
+            ConsoleHelper::stderr('[Fail]' . PHP_EOL, Console::BOLD, Console::FG_RED);
+        }
+        $server->finish($task_id);
     }
 
 }

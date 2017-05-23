@@ -21,6 +21,12 @@ $application = new yii\console\Application([
     'controllerNamespace' => 'iPaya\Swoole\Commands',
     'aliases' => [
         '@iPaya/Swoole' => ROOT_PATH . '/src/'
+    ],
+    'components' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => true,
+        ]
     ]
 ]);
 $application->run();
