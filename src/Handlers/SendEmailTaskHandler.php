@@ -29,7 +29,7 @@ class SendEmailTaskHandler extends AbstractHandler
         $mailer = Yii::$app->mailer->compose();
         $mailer->setTo($to);
         $mailer->setSubject($subject);
-        $mailer->setHtmlBody($body);
+        $mailer->setTextBody($body);
         if ($mailer->send()) {
             ConsoleHelper::stdout("[Ok]" . PHP_EOL, Console::BOLD, Console::FG_GREEN);
         } else {
