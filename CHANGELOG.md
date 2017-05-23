@@ -1,5 +1,9 @@
 # Yii Framework 2 swoole extension Change Log
 
+## 0.3.0 开发中
+
+- 暂无更改记录
+
 ## 0.2.0 2017-05-23
 
 - 增加 `AsyncTask`
