@@ -5,6 +5,11 @@
 
 发送邮件时，将需要发送的邮件数据推送到队列中。
 
+## 需求
+
+- [yii2-swiftmailer](https://github.com/yiisoft/yii2-swiftmailer)
+- [yii2-redis](https://github.com/yiisoft/yii2-redis)
+
 ## 启动
 
 执行命令:
