@@ -35,3 +35,5 @@ php swoolectl example/send-emails
 服务器端显示如下
 
 ![Async Task 处理发送邮件任务](/docs/guide/images/async-task-processing.png)
+
+> 注意: 因为是异步操作，所以显示出来的信息是无序的，在实际应用中对于关心日志的同学可以使用数据库或缓存进行存储单独任务的日志。
