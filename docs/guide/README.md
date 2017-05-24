@@ -6,8 +6,6 @@
 
 - [安装](installation.md)
 - [AsyncTask](async-task.md)
-- [毫秒级定时器](millisecond-timer.md)
+- [定时器](timer.md)
 
-## 应用案例
-
-- [邮件发送服务器](mailer.md)
+## 例子

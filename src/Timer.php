@@ -4,23 +4,21 @@
  * @copyright Copyright (c) 2016 ipaya.cn
  */
 
-namespace iPaya\Swoole\Servers;
+namespace iPaya\Swoole;
 
-use iPaya\Swoole\Handlers\AbstractHandler;
 use Swoole\Server;
 
-class MillisecondTimerServer extends AbstractServer
+/**
+ * Class Timer
+ * @package iPaya\Swoole
+ */
+class Timer extends AbstractServer
 {
-    public $name = '毫秒定时器';
+    public $name = '定时器';
     /**
      * @var int 定时间隔
      */
     public $millisecond = 1000;
-
-    /**
-     * @var AbstractHandler
-     */
-    public $handler;
 
     public $swooleOptions = [
         'worker_num' => 1,
@@ -39,9 +37,7 @@ class MillisecondTimerServer extends AbstractServer
     {
         if ($worker_id == 0) {
             $server->tick($this->millisecond, function () use ($server) {
-                if ($this->handler instanceof AbstractHandler) {
-                    $this->handler->handle($server);
-                }
+                echo "Hello! Now is " . date('Y-m-d H:i:s') . PHP_EOL;
             });
         }
     }

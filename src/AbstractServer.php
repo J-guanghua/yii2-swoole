@@ -4,10 +4,10 @@
  * @copyright Copyright (c) 2016 ipaya.cn
  */
 
-namespace iPaya\Swoole\Servers;
+namespace iPaya\Swoole;
 
 use iPaya\Swoole\Helpers\ConsoleHelper;
-use Swoole\Server as SwooleServer;
+use Swoole\Server;
 use yii\base\InvalidParamException;
 use yii\base\Object;
 use yii\helpers\Console;
@@ -25,7 +25,7 @@ abstract class AbstractServer extends Object
         ['127.0.0.1', 9051],
     ];
     /**
-     * @var SwooleServer
+     * @var Server
      */
     public $server;
     /**
@@ -68,7 +68,7 @@ abstract class AbstractServer extends Object
         foreach ($this->listen as $index => $address) {
             list($host, $port) = $address;
             if ($index == 0) {
-                $this->server = new SwooleServer($host, $port);
+                $this->server = new Server($host, $port);
             } else {
                 $this->server->addlistener($host, $port, SWOOLE_SOCK_TCP);
             }
@@ -96,7 +96,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      */
     public function onStart($server)
     {
@@ -109,7 +109,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      */
     public function onShutdown($server)
     {
@@ -117,7 +117,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $worker_id
      */
     public function onWorkerStart($server, $worker_id)
@@ -126,7 +126,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $worker_id
      */
     public function onWorkerStop($server, $worker_id)
@@ -135,7 +135,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $interval
      */
     public function onTimer($server, $interval)
@@ -144,7 +144,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $fd
      * @param int $from_id
      */
@@ -154,7 +154,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $fd
      * @param int $from_id
      * @param string $data
@@ -165,7 +165,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param string $data
      * @param array $client_info
      */
@@ -175,7 +175,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $fd
      * @param int $reactorId
      */
@@ -185,18 +185,18 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $task_id
      * @param int $src_worker_id
      * @param mixed $data
      */
-    public function onTask(SwooleServer $server, $task_id, $src_worker_id, $data)
+    public function onTask(Server $server, $task_id, $src_worker_id, $data)
     {
         ConsoleHelper::stdout('onTask $' . $task_id . PHP_EOL);
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $task_id
      * @param string $data
      */
@@ -206,7 +206,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $from_worker_id
      * @param string $message
      */
@@ -216,7 +216,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      * @param int $worker_id
      * @param int $worker_pid
      * @param int $exit_code
@@ -228,7 +228,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      */
     public function onManagerStart($server)
     {
@@ -236,7 +236,7 @@ abstract class AbstractServer extends Object
     }
 
     /**
-     * @param SwooleServer $server
+     * @param Server $server
      */
     public function onManagerStop($server)
     {

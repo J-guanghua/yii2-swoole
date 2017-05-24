@@ -24,8 +24,5 @@
         "psr-4": {
             "iPaya\\Swoole\\": "src"
         }
-    },
-    "bin": [
-        "swoolectl"
-    ]
+    }
 }
