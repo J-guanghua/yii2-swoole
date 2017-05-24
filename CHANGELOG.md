@@ -1,5 +1,9 @@
 # Yii Framework 2 swoole extension Change Log
 
+## 0.4.0 开发中
+
+- 暂无更改记录
+
 ## 0.3.0 2017-05-24
 
 - 重构代码及结构，方便在应用中使用和配置
