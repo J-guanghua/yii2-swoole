@@ -94,7 +94,7 @@ class ExampleController extends Controller
             ],
         ];
         foreach ($data as $item) {
-            $redis->executeCommand('RPUSH', ['queue:mail', Json::encode($item)]);
+            $redis->executeCommand('RPUSH', ['queue:mailer', Json::encode($item)]);
         }
     }
 }

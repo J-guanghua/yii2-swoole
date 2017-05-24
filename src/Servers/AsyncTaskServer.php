@@ -15,7 +15,9 @@ use yii\helpers\Json;
 class AsyncTaskServer extends AbstractServer
 {
     public $name = 'AsyncTask 服务器';
-    public $port = 9052;
+    public $listen = [
+        ['127.0.0.1', 9052]
+    ];
 
     public $swooleOptions = [
         'worker_num' => 4,

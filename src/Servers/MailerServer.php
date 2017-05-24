@@ -7,9 +7,8 @@
 namespace iPaya\Swoole\Servers;
 
 
-use iPaya\Swoole\Handlers\SendEmailTaskHandler;
+use iPaya\Swoole\Handlers\AbstractHandler;
 use Swoole\Server;
-use Yii;
 use yii\helpers\Json;
 use yii\redis\Connection;
 
@@ -23,13 +22,26 @@ use yii\redis\Connection;
  */
 class MailerServer extends AsyncTaskServer
 {
+    /**
+     * @var string
+     */
     public $name = '邮件发送服务器';
-
-
     /**
      * @var int 定时间隔
      */
     public $millisecond = 1000;
+    /**
+     * @var string
+     */
+    public $queueKey;
+    /**
+     * @var Connection
+     */
+    public $redis;
+    /**
+     * @var AbstractHandler
+     */
+    public $handler;
 
 
     /**
@@ -41,13 +53,13 @@ class MailerServer extends AsyncTaskServer
         if ($worker_id == 0) {
             $server->tick($this->millisecond, function () use ($server) {
                 /** @var Connection $redis */
-                $redis = Yii::$app->redis;
-                $queue = $redis->executeCommand('LPOP', ['queue:mail']);
+                $redis = $this->redis;
+                $queue = $redis->executeCommand('LPOP', [$this->queueKey]);
                 while ($queue != null) {
                     $data = Json::decode($queue);
-                    $data['handler'] = SendEmailTaskHandler::className();
+                    $data['handler'] = $this->handler;
                     $server->task(Json::encode($data));
-                    $queue = $redis->executeCommand('LPOP', ['queue:mail']);
+                    $queue = $redis->executeCommand('LPOP', [$this->queueKey]);
                 }
             });
         }

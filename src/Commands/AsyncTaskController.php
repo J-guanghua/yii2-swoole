@@ -21,13 +21,10 @@ class AsyncTaskController extends Controller
      * @var AsyncTaskServer
      */
     public $server;
-    /**
-     * @var string 监听主机
-     */
+    public $listen = [
+        ['127.0.0.1', 9052]
+    ];
     public $host = '127.0.0.1';
-    /**
-     * @var int 监听端口
-     */
     public $port = 9052;
 
 
@@ -35,8 +32,7 @@ class AsyncTaskController extends Controller
     {
         parent::init();
         $this->server = new AsyncTaskServer([
-            'host' => $this->host,
-            'port' => $this->port,
+            'listen' => $this->listen,
         ]);
     }
 

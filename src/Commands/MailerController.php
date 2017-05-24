@@ -7,6 +7,7 @@
 namespace iPaya\Swoole\Commands;
 
 
+use iPaya\Swoole\Handlers\SendEmailTaskHandler;
 use iPaya\Swoole\Servers\AsyncTaskServer;
 use iPaya\Swoole\Servers\MailerServer;
 use yii\console\Controller;
@@ -23,21 +24,21 @@ class MailerController extends Controller
      */
     public $server;
     /**
-     * @var string 监听主机
+     * @var array 监听地址
      */
-    public $host = '127.0.0.1';
-    /**
-     * @var int 监听端口
-     */
-    public $port = 9053;
+    public $listen = [
+        ['127.0.0.1', 9053]
+    ];
 
 
     public function init()
     {
         parent::init();
         $this->server = new MailerServer([
-            'host' => $this->host,
-            'port' => $this->port,
+            'listen' => $this->listen,
+            'redis' => \Yii::$app->redis,
+            'queueKey' => 'queue:mailer',
+            'handler' => SendEmailTaskHandler::className(),
         ]);
     }
 
