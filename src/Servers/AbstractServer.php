@@ -94,7 +94,7 @@ abstract class AbstractServer extends Object
      */
     public function onStart($server)
     {
-        ConsoleHelper::stdout("[$this->host:$this->port] [Ok]" . PHP_EOL, Console::BOLD, Console::FG_GREEN);
+        ConsoleHelper::stdout("[Bind on $this->host:$this->port] [Ok]" . PHP_EOL, Console::BOLD, Console::FG_GREEN);
     }
 
     /**
