@@ -6,21 +6,31 @@
  */
 
 defined('YII_DEBUG') or define('YII_DEBUG', true);
-define('ROOT_PATH', __DIR__);
 
-$vendorPath = ROOT_PATH . '/vendor';
+$composerAutoload = [
+    __DIR__ . '/../vendor/autoload.php', // in yii2-dev repo
+    __DIR__ . '/../../autoload.php', // installed as a composer binary
+];
 
-require($vendorPath . '/autoload.php');
+$vendorPath = null;
+foreach ($composerAutoload as $autoload) {
+    if (file_exists($autoload)) {
+        require($autoload);
+        $vendorPath = dirname($autoload);
+        break;
+    }
+}
+
 require($vendorPath . '/yiisoft/yii2/Yii.php');
 
 $application = new yii\console\Application([
     'id' => 'iPaya-swoole',
-    'basePath' => ROOT_PATH . '/src',
+    'basePath' => __DIR__ . '/src',
     'enableCoreCommands' => false,
-    'runtimePath' => ROOT_PATH . '/runtime',
+    'runtimePath' => __DIR__ . '/runtime',
     'controllerNamespace' => 'iPaya\Swoole\Commands',
     'aliases' => [
-        '@iPaya/Swoole' => ROOT_PATH . '/src/'
+        '@iPaya/Swoole' => __DIR__ . '/src/'
     ]
 ]);
 $application->run();
