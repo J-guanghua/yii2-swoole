@@ -19,13 +19,11 @@ abstract class AbstractServer extends Object
      */
     public $name = '服务器';
     /**
-     * @var string 绑定地址
+     * @var array 监听地址及端口
      */
-    public $host = '127.0.0.1';
-    /**
-     * @var int 绑定端口
-     */
-    public $port = 9051;
+    public $listen = [
+        ['127.0.0.1', 9051],
+    ];
     /**
      * @var SwooleServer
      */
@@ -67,7 +65,15 @@ abstract class AbstractServer extends Object
      */
     public function start()
     {
-        $this->server = new SwooleServer($this->host, $this->port);
+        foreach ($this->listen as $index => $address) {
+            list($host, $port) = $address;
+            if ($index == 0) {
+                $this->server = new SwooleServer($host, $port);
+            } else {
+                $this->server->addlistener($host, $port, SWOOLE_SOCK_TCP);
+            }
+        }
+
         $this->server->set($this->swooleOptions);
 
         foreach ($this->events as $event) {
@@ -94,7 +100,12 @@ abstract class AbstractServer extends Object
      */
     public function onStart($server)
     {
-        ConsoleHelper::stdout("[Bind on $this->host:$this->port] [Ok]" . PHP_EOL, Console::BOLD, Console::FG_GREEN);
+        $bind = [];
+        foreach ($this->listen as $value) {
+            list($host, $port) = $value;
+            $bind[] = "$host:$port";
+        }
+        ConsoleHelper::stdout("[" . implode(', ', $bind) . "] [Ok]" . PHP_EOL, Console::BOLD, Console::FG_GREEN);
     }
 
     /**
