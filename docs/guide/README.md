@@ -7,5 +7,3 @@
 - [安装](installation.md)
 - [AsyncTask](async-task.md)
 - [定时器](timer.md)
-
-## 例子
