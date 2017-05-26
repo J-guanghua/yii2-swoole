@@ -26,17 +26,26 @@ return [
             'database' => 0
         ],
         'queue' => [
-            'class' => 'iPaya\Swoole\Queue',
+            'class' => 'iPaya\Swoole\Redis\Queue',
             'redis' => 'redis'
         ],
         'timer' => [
-            'class' => 'iPaya\Swoole\Timer'
+            'class' => 'iPaya\Swoole\Timer',
+            'listen' => [
+                ['127.0.0.1', 9051]
+            ]
         ],
         'asyncTask' => [
-            'class' => 'iPaya\Swoole\AsyncTaskServer',
+            'class' => 'iPaya\Swoole\AsyncTask\Server',
             'queue' => 'queue',
             'listen' => [
                 ['127.0.0.1', 9052]
+            ],
+        ],
+        'websocket' => [
+            'class' => 'iPaya\Swoole\WebSocket\Server',
+            'listen' => [
+                ['127.0.0.1', 9053]
             ]
         ]
     ]

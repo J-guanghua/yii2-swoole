@@ -6,13 +6,13 @@
 
 namespace iPaya\Swoole;
 
-use Swoole\Server;
+use iPaya\Swoole\Events\WorkerStartEvent;
 
 /**
  * Class Timer
  * @package iPaya\Swoole
  */
-class Timer extends AbstractServer
+class Timer extends Server
 {
     public $name = '定时器';
     /**
@@ -22,21 +22,21 @@ class Timer extends AbstractServer
 
     public $swooleOptions = [
         'worker_num' => 1,
-        'daemonize' => false,
     ];
 
-    public $events = [
-        'start', 'workerStart', 'connect', 'receive', 'close'
-    ];
+    public function init()
+    {
+        parent::init();
+        $this->on(static::EVENT_WORKER_START, [$this, 'onWorkerStart']);
+    }
 
     /**
-     * @param Server $server
-     * @param int $worker_id
+     * @param WorkerStartEvent $event
      */
-    public function onWorkerStart($server, $worker_id)
+    public function onWorkerStart($event)
     {
-        if ($worker_id == 0) {
-            $server->tick($this->millisecond, function () use ($server) {
+        if ($event->workerId == 0) {
+            $event->server->tick($this->millisecond, function () {
                 echo "Hello! Now is " . date('Y-m-d H:i:s') . PHP_EOL;
             });
         }
