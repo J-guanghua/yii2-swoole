@@ -159,6 +159,13 @@ class Server extends Component
      */
     public function onSwooleStart($server)
     {
+        echo "启动成功" . PHP_EOL;
+        echo "  绑定" . PHP_EOL;
+        foreach ($this->listen as $listen) {
+            list($address, $port) = $listen;
+            echo "   - {$address}:{$port}" . PHP_EOL;
+        }
+        echo PHP_EOL;
         $this->trigger(static::EVENT_START, new StartEvent([
             'server' => $server,
         ]));

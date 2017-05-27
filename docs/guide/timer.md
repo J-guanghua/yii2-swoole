@@ -11,15 +11,18 @@
 
 namespace My;
 
-class Timer extends \iPaya\Timer
+class Timer extends \iPaya\Swoole\Timer
 {
-    public function onWorkerStart($server, $worker_id)
+    public function init()
     {
-        if ($worker_id == 0) {
-            $server->tick($this->millisecond, function () use ($server) {
-                // 这里写实际业务
-            });
-        }
+        parent::init();
+        $this->on(static::EVENT_WORKER_START, function(WorkerStartEvent $event){
+            if ($event->workerId == 0) {
+                $event->server->tick($this->millisecond, function () use ($event) {
+                    // 这里写实际业务
+                });
+            }
+        });
     }
 }
 ```

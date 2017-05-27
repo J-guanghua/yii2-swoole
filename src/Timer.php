@@ -19,7 +19,9 @@ class Timer extends Server
      * @var int 定时间隔
      */
     public $millisecond = 1000;
-
+    public $enabledEvents = [
+        'start', 'workerStart', 'receive'
+    ];
     public $swooleOptions = [
         'worker_num' => 1,
     ];

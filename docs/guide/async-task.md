@@ -35,7 +35,7 @@ return [
     'components'=>[
         // ...
         'queue' => [
-            'class' => 'iPaya\Swoole\Queue',
+            'class' => 'iPaya\Swoole\Redis\Queue',
             // 上面配置的 redis
             'redis' => 'redis'
         ],
@@ -45,7 +45,7 @@ return [
 ];
 ```
 
-如果要实现自己队列需要实现 `iPaya\Swoole\QueueInterface` 接口。
+如果要实现自己队列需要继承 `iPaya\Swoole\Queue` 类。
 
 配置 `asyncTask`:
 
@@ -56,7 +56,7 @@ return [
     'components'=>[
         // ...
         'asyncTask' => [
-            'class' => 'iPaya\Swoole\AsyncTaskServer',
+            'class' => 'iPaya\Swoole\AsyncTask\Server',
             // 上面配置的 queue 队列
             'queue' => 'queue',
             // 监听地址及端口，每隔数组一条，第一个元素是地址，第二个元素是端口
