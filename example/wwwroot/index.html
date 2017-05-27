@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  ~ @link http://ipaya.cn/
+  ~ @copyright Copyright (c) 2016 ipaya.cn
+  -->
+
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebSocket_yii2-swoole</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style rel="stylesheet">
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row" style="margin-top: 60px;">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" id="input-message" class="form-control" placeholder="请输入信息...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" id="btn-send">发送!</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+    <div id="messages" class="well" style="margin-top: 30px;color: #444;"></div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var messages = $('#messages');
+    var connected = false;
+
+    function showMessage(message) {
+        messages.append('<p>' + message + '</p>');
+    }
+
+    function log(message) {
+        messages.append('<p class="text-muted">' + message + '</p>');
+    }
+
+    // 测试时替换为你的 IP
+    var socket = new WebSocket('ws://192.168.123.123:9053');
+    log('连接中...');
+    //连接成功时触发
+    socket.onopen = function () {
+        connected = true;
+        log('连接成功');
+    };
+
+    socket.onerror = function () {
+        log('连接失败');
+    };
+
+    socket.onmessage = function (res) {
+        showMessage(res.data);
+    };
+
+    // 监听Socket的关闭
+    socket.onclose = function (event) {
+        log('连接已断开！');
+    };
+
+    $(document).on('click', '#btn-send', function () {
+        message = $('#input-message').val().trim();
+        if (message.length == 0) {
+            alert('请填写消息');
+            return;
+        }
+        socket.send(message);
+        $('#input-message').val('');
+    });
+</script>
+</body>
+</html>

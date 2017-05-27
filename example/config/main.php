@@ -10,6 +10,12 @@ return [
     'enableCoreCommands' => false,
     'runtimePath' => __DIR__ . '/../runtime',
     'controllerNamespace' => 'App\Commands',
+    'controllerMap' => [
+        'serve' => [
+            'class' => 'yii\console\controllers\ServeController',
+            'docroot' => __DIR__ . '/../wwwroot'
+        ]
+    ],
     'aliases' => [
         '@App' => __DIR__ . '/../app/',
         '@iPaya/Swoole' => __DIR__ . '/../../src'
@@ -45,7 +51,7 @@ return [
         'websocket' => [
             'class' => 'iPaya\Swoole\WebSocket\Server',
             'listen' => [
-                ['127.0.0.1', 9053]
+                ['0.0.0.0', 9053]
             ]
         ]
     ]
